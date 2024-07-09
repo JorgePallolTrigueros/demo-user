@@ -1,0 +1,115 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/JORGEPALLOL1/user-api/1.0.0
+info:
+  description: User API
+  version: "1.0.0"
+  title: User API
+  contact:
+    email: jorgepallol1@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: public
+    description: Public Access API  Method
+  - name: private
+    description: Private Access API Method
+paths:
+  /sign-up:
+    post:
+      tags:
+        - public
+      summary: User Sign Up
+      operationId: signUp
+      description: |
+        Sign User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+      responses:
+        '200':
+          description: success login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        '400':
+          description: bad input parameter
+  /login:
+    post:
+      tags:
+        - public
+      summary: User Login
+      operationId: login
+      description: |
+        Access and login with the user and password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: success login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        '400':
+          description: bad input parameter
+components:
+  schemas:
+    SignUpRequest:
+      type: object
+      required:
+        - name
+        - phoneNumber
+        - email
+        - address
+        - user
+        - password
+      properties:
+        name:
+          type: string
+          example: jorge
+        phoneNumber:
+          type: string
+          example: 123456789
+        email:
+          type: string
+          example: jorge@gmail.com
+        address:
+          type: string
+          example: Barrio del Pilar
+        user:
+          type: string
+          example: jorge
+        password:
+          type: string
+          example: asd-12345@
+    LoginRequest:
+      type: object
+      required:
+        - user
+        - password
+      properties:
+        user:
+          type: string
+          example: jorge
+        password:
+          type: string
+          example: "1234578"
+    JwtResponse:
+      type: object
+      required:
+        - jwt
+      properties:
+        jwt:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
