@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,8 +34,19 @@ public class SecurityConfig  {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/registration", "/login", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "/webjars/**", "/swagger.json").permitAll()
+        http
+                .csrf(AbstractHttpConfigurer::disable)  // Desactivar CSRF utilizando la nueva API
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                                "/v1/user/sign-up",
+                                "/v1/user/login",
+                                "/v3/api-docs/**",  // Cambia "/v2/api-docs" por "/v3/api-docs/**" si usas OpenAPI 3
+                                "/swagger-resources/**",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/swagger-ui.html",  // Esta línea es importante
+                                "/swagger.json"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -46,7 +58,14 @@ public class SecurityConfig  {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "/webjars/**", "/swagger.json");
+        return web -> web.ignoring().requestMatchers(
+                "/v3/api-docs/**",  // Cambia "/v2/api-docs" por "/v3/api-docs/**" si usas OpenAPI 3
+                "/swagger-resources/**",
+                "/swagger-ui/**",
+                "/webjars/**",
+                "/swagger-ui.html",  // Esta línea es importante
+                "/swagger.json"
+        );
     }
 
 }
