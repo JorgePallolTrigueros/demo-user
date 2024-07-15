@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@Entity(name = "product")
+@Entity(name = "user")
 public class UserEntity {
 
     @Id
