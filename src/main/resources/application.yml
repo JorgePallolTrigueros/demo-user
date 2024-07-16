@@ -17,5 +17,5 @@ server:
 
 
 jwt:
-  secret: clave_unica
+  secret: Q2xhdmVDb21wbGVqYURlRGVzY2lmcmFyUXVlTmFkaWVMYVNhYmUxMjM0NTY3ODk=
   expiration: 3600000  # 1 hora
