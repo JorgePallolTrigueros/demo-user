@@ -73,7 +73,7 @@ public class UserJpaService implements UserService {
     public boolean recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest) {
         final Optional<UserEntity> optionalUser = this.userRepository.findById(recoveryPasswordRequest.getEmail());
         if(optionalUser.isEmpty()){
-            log.info("Usuario {} no encontrado",recoveryPasswordRequest.getEmail());
+            log.info("Usuario {} no encontrado en el metodo recovery password",recoveryPasswordRequest.getEmail());
             return false;
         }
 
