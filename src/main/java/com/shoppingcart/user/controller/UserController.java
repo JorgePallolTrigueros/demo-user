@@ -38,7 +38,12 @@ public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi 
 
     @Override
     public ResponseEntity<Void> recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest) {
-        return ResponseEntity.ok().build();
+        final boolean recoverySent = userService.recoverPassword(recoveryPasswordRequest);
+        if(recoverySent){
+            return ResponseEntity.ok().build();
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Override// v1/user/login

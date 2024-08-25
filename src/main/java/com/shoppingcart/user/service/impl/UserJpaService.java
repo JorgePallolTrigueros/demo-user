@@ -4,10 +4,12 @@ import com.shoppingcart.user.dao.entity.UserEntity;
 import com.shoppingcart.user.dao.repository.UserRepository;
 import com.shoppingcart.user.model.JwtResponse;
 import com.shoppingcart.user.model.LoginRequest;
+import com.shoppingcart.user.model.RecoveryPasswordRequest;
 import com.shoppingcart.user.model.SignUpRequest;
 import com.shoppingcart.user.service.JpaUserDetailService;
 import com.shoppingcart.user.service.JwtService;
 import com.shoppingcart.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserJpaService implements UserService {
 
@@ -63,5 +67,18 @@ public class UserJpaService implements UserService {
         final String jwt = jwtService.generateToken(userDetails);
 
         return new JwtResponse(jwt);
+    }
+
+    @Override
+    public boolean recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest) {
+        final Optional<UserEntity> optionalUser = this.userRepository.findById(recoveryPasswordRequest.getEmail());
+        if(optionalUser.isEmpty()){
+            log.info("Usuario {} no encontrado",recoveryPasswordRequest.getEmail());
+            return false;
+        }
+
+        final UserEntity userEntity = optionalUser.get();
+
+        return true;
     }
 }
