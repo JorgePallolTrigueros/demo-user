@@ -67,7 +67,7 @@ public class LoginRequest {
    * @return password
   */
   @NotNull 
-  @Schema(name = "password", example = "1234578", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "password", example = "123456789", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("password")
   public String getPassword() {
     return password;

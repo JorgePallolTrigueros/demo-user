@@ -1,9 +1,11 @@
 package com.shoppingcart.user.controller;
 
 import com.shoppingcart.user.api.LoginApi;
+import com.shoppingcart.user.api.RecoveryPasswordApi;
 import com.shoppingcart.user.api.SignUpApi;
 import com.shoppingcart.user.model.JwtResponse;
 import com.shoppingcart.user.model.LoginRequest;
+import com.shoppingcart.user.model.RecoveryPasswordRequest;
 import com.shoppingcart.user.model.SignUpRequest;
 import com.shoppingcart.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/user")
-public class UserController implements LoginApi, SignUpApi {
+public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi {
 
     // 1. API
     // 2. Servicio
@@ -31,6 +33,12 @@ public class UserController implements LoginApi, SignUpApi {
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return LoginApi.super.getRequest();
+    }
+
+
+    @Override
+    public ResponseEntity<Void> recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest) {
+        return ResponseEntity.ok().build();
     }
 
     @Override// v1/user/login

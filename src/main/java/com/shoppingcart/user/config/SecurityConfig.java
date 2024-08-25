@@ -49,7 +49,9 @@ public class SecurityConfig  {
                 .csrf(AbstractHttpConfigurer::disable)  // Desactivar CSRF utilizando la nueva API
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
+
                                 "/v1/user/sign-up",
+                                "/v1/user/recovery-password",
                                 "/v1/user/login",
                                 "/v3/api-docs/**",  // Cambia "/v2/api-docs" por "/v3/api-docs/**" si usas OpenAPI 3
                                 "/swagger-resources/**",

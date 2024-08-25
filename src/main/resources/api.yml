@@ -18,6 +18,24 @@ tags:
   - name: private
     description: Private Access API Method
 paths:
+  /recovery-password:
+    post:
+      tags:
+        - public
+      summary: Recovery password
+      operationId: recoverPassword
+      description: |
+        Recovery password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecoveryPasswordRequest'
+      responses:
+        '200':
+          description: success Email Send
+        '400':
+          description: bad input parameter
   /sign-up:
     post:
       tags:
@@ -103,7 +121,15 @@ components:
           example: jorge
         password:
           type: string
-          example: "1234578"
+          example: "123456789"
+    RecoveryPasswordRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          example: jorge@gmail.com
     JwtResponse:
       type: object
       required:
