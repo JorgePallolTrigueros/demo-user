@@ -1,6 +1,6 @@
 package com.shoppingcart.user.filter;
 
-import com.shoppingcart.user.service.JwtService;
+import com.shoppingcart.user.service.user.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

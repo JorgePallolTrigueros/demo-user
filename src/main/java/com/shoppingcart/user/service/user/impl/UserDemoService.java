@@ -1,11 +1,10 @@
-package com.shoppingcart.user.service.impl;
+package com.shoppingcart.user.service.user.impl;
 
-import com.shoppingcart.user.model.JwtResponse;
-import com.shoppingcart.user.model.LoginRequest;
-import com.shoppingcart.user.model.RecoveryPasswordRequest;
-import com.shoppingcart.user.model.SignUpRequest;
-import com.shoppingcart.user.service.UserService;
-import org.springframework.stereotype.Service;
+import com.shoppingcart.user.dto.JwtResponse;
+import com.shoppingcart.user.dto.LoginRequest;
+import com.shoppingcart.user.dto.RecoveryPasswordRequest;
+import com.shoppingcart.user.dto.SignUpRequest;
+import com.shoppingcart.user.service.user.UserService;
 
 //@Service
 public class UserDemoService implements UserService {

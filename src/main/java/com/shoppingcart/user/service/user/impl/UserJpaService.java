@@ -1,14 +1,14 @@
-package com.shoppingcart.user.service.impl;
+package com.shoppingcart.user.service.user.impl;
 
 import com.shoppingcart.user.dao.entity.UserEntity;
 import com.shoppingcart.user.dao.repository.UserRepository;
-import com.shoppingcart.user.model.JwtResponse;
-import com.shoppingcart.user.model.LoginRequest;
-import com.shoppingcart.user.model.RecoveryPasswordRequest;
-import com.shoppingcart.user.model.SignUpRequest;
-import com.shoppingcart.user.service.JpaUserDetailService;
-import com.shoppingcart.user.service.JwtService;
-import com.shoppingcart.user.service.UserService;
+import com.shoppingcart.user.dto.JwtResponse;
+import com.shoppingcart.user.dto.LoginRequest;
+import com.shoppingcart.user.dto.RecoveryPasswordRequest;
+import com.shoppingcart.user.dto.SignUpRequest;
+import com.shoppingcart.user.service.user.JpaUserDetailService;
+import com.shoppingcart.user.service.user.JwtService;
+import com.shoppingcart.user.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

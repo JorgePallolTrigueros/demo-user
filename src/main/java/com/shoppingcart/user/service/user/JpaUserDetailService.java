@@ -1,4 +1,4 @@
-package com.shoppingcart.user.service;
+package com.shoppingcart.user.service.user;
 
 import com.shoppingcart.user.dao.entity.UserEntity;
 import com.shoppingcart.user.dao.repository.UserRepository;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
