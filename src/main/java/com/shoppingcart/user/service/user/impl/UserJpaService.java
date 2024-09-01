@@ -2,10 +2,8 @@ package com.shoppingcart.user.service.user.impl;
 
 import com.shoppingcart.user.dao.entity.UserEntity;
 import com.shoppingcart.user.dao.repository.UserRepository;
-import com.shoppingcart.user.dto.JwtResponse;
-import com.shoppingcart.user.dto.LoginRequest;
-import com.shoppingcart.user.dto.RecoveryPasswordRequest;
-import com.shoppingcart.user.dto.SignUpRequest;
+import com.shoppingcart.user.dto.*;
+import com.shoppingcart.user.service.notification.UserNotificationService;
 import com.shoppingcart.user.service.user.JpaUserDetailService;
 import com.shoppingcart.user.service.user.JwtService;
 import com.shoppingcart.user.service.user.UserService;
@@ -24,13 +22,15 @@ import java.util.Optional;
 @Service
 public class UserJpaService implements UserService {
 
+    private final UserNotificationService userNotificationService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final JpaUserDetailService userDetailService;
 
-    public UserJpaService(PasswordEncoder passwordEncoder, UserRepository userRepository, JwtService jwtService, AuthenticationManager authenticationManager, JpaUserDetailService userDetailService) {
+    public UserJpaService(UserNotificationService userNotificationService, PasswordEncoder passwordEncoder, UserRepository userRepository, JwtService jwtService, AuthenticationManager authenticationManager, JpaUserDetailService userDetailService) {
+        this.userNotificationService = userNotificationService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -79,6 +79,13 @@ public class UserJpaService implements UserService {
 
         final UserEntity userEntity = optionalUser.get();
 
-        return true;
+        return userNotificationService.sendRecoveryPasswordNotification(UserDto
+                .builder()
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .address(userEntity.getAddress())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .createdAt(userEntity.getCreatedAt())
+                .build());
     }
 }
