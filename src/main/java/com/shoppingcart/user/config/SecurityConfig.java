@@ -57,6 +57,8 @@ public class SecurityConfig  {
                                 "/swagger-resources/**",
                                 "/swagger-ui/**",
                                 "/webjars/**",
+                                "/reset-password/**",
+                                "/reset-password.html",
                                 "/swagger-ui.html",  // Esta línea es importante
                                 "/swagger.json"
                         ).permitAll()
@@ -77,7 +79,8 @@ public class SecurityConfig  {
                 "/swagger-ui/**",
                 "/webjars/**",
                 "/swagger-ui.html",  // Esta línea es importante
-                "/swagger.json"
+                "/swagger.json",
+                "/v1/user-password/**"
         );
     }
 
