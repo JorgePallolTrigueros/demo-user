@@ -10,6 +10,4 @@ public interface UserService {
     JwtResponse login(LoginRequest loginRequest);
 
     JwtResponse signUp(SignUpRequest signUpRequest);
-
-    boolean recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest);
 }

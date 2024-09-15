@@ -7,7 +7,9 @@ import com.shoppingcart.user.dto.JwtResponse;
 import com.shoppingcart.user.dto.LoginRequest;
 import com.shoppingcart.user.dto.RecoveryPasswordRequest;
 import com.shoppingcart.user.dto.SignUpRequest;
+import com.shoppingcart.user.service.password.PasswordRecoverService;
 import com.shoppingcart.user.service.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/user")
+@RequiredArgsConstructor
 public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi {
 
     // 1. API
@@ -24,10 +27,7 @@ public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi 
     // 3. Conexión con base
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final PasswordRecoverService passwordRecoverService;
 
 
     @Override
@@ -38,7 +38,7 @@ public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi 
 
     @Override
     public ResponseEntity<Void> recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest) {
-        final boolean recoverySent = userService.recoverPassword(recoveryPasswordRequest);
+        final boolean recoverySent = passwordRecoverService.recoverPassword(recoveryPasswordRequest);
         if(recoverySent){
             return ResponseEntity.ok().build();
         }else{
