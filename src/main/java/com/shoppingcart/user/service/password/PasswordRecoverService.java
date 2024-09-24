@@ -5,9 +5,11 @@ import com.shoppingcart.user.dao.repository.UserRepository;
 import com.shoppingcart.user.dto.RecoveryPasswordRequest;
 import com.shoppingcart.user.dto.UserDto;
 import com.shoppingcart.user.service.notification.UserNotificationService;
+import com.shoppingcart.user.util.AppUtil;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PasswordRecoverService {
 
+    public static final int MAX_MIN_TO_WAIT_PASSWORD_CHANGED = 5;
     public static Map<String, UserDto> tokenUserMap = new HashMap<>();
+    // 1234 -> User(jorge,jorge@gmail.com,1234,.......)
+    // 4567 -> User(Jon,jon@gmail.com,4567...)
+    //.....
+
     private final UserNotificationService userNotificationService;
     private final UserRepository userRepository;
 
@@ -59,15 +66,50 @@ public class PasswordRecoverService {
 
     @Scheduled(cron = "0 */1 * ? * *")
     public void verifyTokenExpiryEveryMinute(){
-
-        tokenUserMap.forEach((token,user)->{
-            //TODO comprobar que si ha pasado mas de 10 minutos borrar el token del mapa
-
-        });
+        log.info("Verificar expiracion de tokens");
+        for(UserDto user: tokenUserMap.values()){
+            long minutesPassed = AppUtil.minutesDiff(user.getTokenPasswordCreatedAt(),new Date());
+            if(minutesPassed >= MAX_MIN_TO_WAIT_PASSWORD_CHANGED){
+                log.info("Se ha removido el user: {}",user);
+                tokenUserMap.remove(user.getToken());
+            }
+        }
     }
 
     public void changePassword(String email, String token,String password,String password2){
+        final Optional<UserEntity> optionalUser = this.userRepository.findById(email);
 
+        if(optionalUser.isEmpty()){
+            log.info("Usuario {} no encontrado en el metodo recovery password",email);
+            throw new RuntimeException("No se ha encontrado el usuario con email "+email);
+        }
+
+        if(!password.equals(password2)){
+            throw new RuntimeException("Las contraseñas deben ser iguales");
+        }
+
+        if(!tokenUserMap.containsKey(token)){
+            throw new RuntimeException("Token de recuperación es invalido");
+        }
+
+        final UserEntity userEntity = optionalUser.get();
+
+        userEntity.setPassword(password);
+
+        final UserDto user = UserDto
+                .builder()
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .address(userEntity.getAddress())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .createdAt(userEntity.getCreatedAt())
+                .build();
+
+        final boolean notificationSend = userNotificationService.sendPasswordChangedNotification(user);
+        log.info("Notification was send: {}",notificationSend);
     }
+
+
+
 
 }

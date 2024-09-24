@@ -6,4 +6,6 @@ public interface UserNotificationService {
 
     boolean sendRecoveryPasswordNotification(UserDto user);
 
+    boolean sendPasswordChangedNotification(UserDto userDto);
+
 }
