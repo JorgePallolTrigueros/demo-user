@@ -1,26 +1,22 @@
 package com.shoppingcart.user.controller;
 
+import com.shoppingcart.user.service.password.PasswordRecoverService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class PasswordRecoveryController {
 
-    private boolean isValidUUID(String uuid) {
-        // Aquí puedes implementar la lógica para verificar si el UUID es válido (por ejemplo, buscarlo en la base de datos)
-        try {
-            // Lógica para validar el UUID con la base de datos
-            return true; // Cambiar por la validación real
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
+    private final PasswordRecoverService passwordRecoverService;
+
 
     @GetMapping("/reset-password/{uuid}")
     public String showPasswordResetPage(@PathVariable String uuid, Model model) {
-        if (!isValidUUID(uuid)) {
+        if (!passwordRecoverService.tokenIsValid(uuid)) {
             model.addAttribute("error", "El enlace de recuperación no es válido.");
             return "error-page";  // Mostrar una página de error en caso de UUID inválido
         }
@@ -36,7 +32,7 @@ public class PasswordRecoveryController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
-        if (!isValidUUID(uuid)) {
+        if (!passwordRecoverService.tokenIsValid(uuid)) {
             model.addAttribute("error", "El enlace de recuperación no es válido.");
             return "error-page";
         }
@@ -47,11 +43,16 @@ public class PasswordRecoveryController {
             return "reset-password";
         }
 
-        // Lógica para actualizar la contraseña en la base de datos
-        // userService.updatePassword(uuid, password);
+
+        try {
+            passwordRecoverService.changePassword(uuid,password,confirmPassword);
+        }catch (final Exception ex){
+            model.addAttribute("error", "Ocurrio un error al cambiar la contraseña: "+ex.getMessage());
+            return "error-page";
+        }
 
         redirectAttributes.addFlashAttribute("message", "Contraseña reestablecida exitosamente.");
-        return "redirect:/login";  // Redirigir a la página de login
+        return "password-changed";  // Redirigir a la página de login
     }
 
 }

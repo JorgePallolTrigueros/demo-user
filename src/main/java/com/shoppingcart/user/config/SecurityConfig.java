@@ -58,6 +58,8 @@ public class SecurityConfig  {
                                 "/swagger-ui/**",
                                 "/webjars/**",
                                 "/reset-password/**",
+                                "/error-page/**",
+                                "/password-changed/**",
                                 "/reset-password.html",
                                 "/swagger-ui.html",  // Esta línea es importante
                                 "/swagger.json"

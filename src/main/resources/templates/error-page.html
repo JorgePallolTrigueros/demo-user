@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>¡Algo salió mal!</h1>
+    <p th:text="${error}">Mensaje de error</p>
+    <a th:href="@{/login}" class="btn btn-primary">Ir al login</a>
+</div>
+</body>
+</html>

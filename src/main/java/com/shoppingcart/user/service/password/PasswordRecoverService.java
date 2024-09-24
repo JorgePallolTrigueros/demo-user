@@ -29,6 +29,10 @@ public class PasswordRecoverService {
     private final UserNotificationService userNotificationService;
     private final UserRepository userRepository;
 
+    public boolean tokenIsValid(String token){
+        return tokenUserMap.containsKey(token);
+    }
+
     public boolean recoverPassword(RecoveryPasswordRequest recoveryPasswordRequest){
         final Optional<UserEntity> optionalUser = this.userRepository.findById(recoveryPasswordRequest.getEmail());
         if(optionalUser.isEmpty()){
@@ -76,7 +80,16 @@ public class PasswordRecoverService {
         }
     }
 
-    public void changePassword(String email, String token,String password,String password2){
+    public void changePassword(String token,String password,String password2){
+        final boolean isTokenValid = tokenIsValid(token);
+        if(!isTokenValid){
+            log.info("No es un token valido");
+            throw new RuntimeException("No es un token valido");
+        }
+
+        final UserDto userDto = tokenUserMap.get(token);
+        final String email = userDto.getEmail();
+
         final Optional<UserEntity> optionalUser = this.userRepository.findById(email);
 
         if(optionalUser.isEmpty()){
@@ -88,13 +101,11 @@ public class PasswordRecoverService {
             throw new RuntimeException("Las contraseñas deben ser iguales");
         }
 
-        if(!tokenUserMap.containsKey(token)){
-            throw new RuntimeException("Token de recuperación es invalido");
-        }
-
         final UserEntity userEntity = optionalUser.get();
 
         userEntity.setPassword(password);
+
+        this.userRepository.saveAndFlush(userEntity);
 
         final UserDto user = UserDto
                 .builder()
