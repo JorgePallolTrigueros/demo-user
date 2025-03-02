@@ -20,20 +20,20 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1/user")
 @RequiredArgsConstructor
-public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi {
+    public class UserController implements LoginApi, SignUpApi, RecoveryPasswordApi {
 
-    // 1. API
-    // 2. Servicio
-    // 3. Conexión con base
+        // 1. API
+        // 2. Servicio
+        // 3. Conexión con base
 
-    private final UserService userService;
-    private final PasswordRecoverService passwordRecoverService;
+        private final UserService userService;
+        private final PasswordRecoverService passwordRecoverService;
 
 
-    @Override
-    public Optional<NativeWebRequest> getRequest() {
-        return LoginApi.super.getRequest();
-    }
+        @Override
+        public Optional<NativeWebRequest> getRequest() {
+            return LoginApi.super.getRequest();
+        }
 
 
     @Override
