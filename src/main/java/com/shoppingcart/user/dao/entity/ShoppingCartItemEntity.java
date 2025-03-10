@@ -1,6 +1,5 @@
 package com.shoppingcart.user.dao.entity;
 
-import com.shoppingcart.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

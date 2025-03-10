@@ -29,7 +29,7 @@ public class JpaUserDetailService implements UserDetailsService {
 
         final UserEntity userEntity = optionalUser.get();
 
-        final Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("GUEST"));
+        final Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority(userEntity.getRol()));
 
         return new org.springframework.security.core.userdetails.User(
                 email,

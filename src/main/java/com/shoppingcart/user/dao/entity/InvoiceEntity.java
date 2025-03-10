@@ -1,6 +1,6 @@
 package com.shoppingcart.user.dao.entity;
 
-import com.shoppingcart.model.Product;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

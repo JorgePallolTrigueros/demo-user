@@ -55,6 +55,7 @@ public class UserJpaService implements UserService {
         userEntity.setPhoneNumber(signUpRequest.getPhoneNumber());
         userEntity.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userEntity.setCreatedAt(new Date());
+        userEntity.setRol("GUEST");
         userRepository.saveAndFlush(userEntity);
 
         final UserDetails userDetails = userDetailService.loadUserByUsername(signUpRequest.getEmail());
