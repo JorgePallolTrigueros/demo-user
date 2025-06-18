@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -103,7 +104,10 @@ public class PasswordRecoverService {
 
         final UserEntity userEntity = optionalUser.get();
 
-        userEntity.setPassword(password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password); // password en texto plano
+
+        userEntity.setPassword(encodedPassword);
 
         this.userRepository.saveAndFlush(userEntity);
 
